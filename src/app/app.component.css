@@ -1,0 +1,17 @@
+.topRowButton{
+  margin-left: 20px;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+.titleText{
+  font-size: 36pt;
+  margin-left: 20px;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+.urlDisplay{
+  font-size: 14pt;
+  margin-left: 20px;
+}

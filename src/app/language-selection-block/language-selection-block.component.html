@@ -1,0 +1,5 @@
+<span *ngFor="let lang of fullLanguageArray" class="col-1-5"> 
+  <input type="checkbox" (click)="processLanguageSelect(lang.id)" id="{{lang.id}}"> 
+  <label for="{{lang.id}}">{{ lang.name }}</label> 
+</span>
+

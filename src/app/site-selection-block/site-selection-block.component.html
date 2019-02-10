@@ -1,0 +1,4 @@
+<span *ngFor="let site of fullSiteArray" class="col-1-8"> 
+  <input type="checkbox" id="{{ site | lowercase }}" (click)="processSiteSelect(site)"> 
+  <label for="{{ site | lowercase }}">{{ site }}</label> 
+</span>
