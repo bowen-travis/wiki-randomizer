@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GetDataFromURLService } from './get-data-from-url.service';
 import { AllLanguagesService } from './all-languages.service';
 import { ActiveLanguagesService} from './active-languages.service';
@@ -18,6 +18,7 @@ export class AppComponent {
   activeSitesArray = [];
   validSitesArray = [];
   currentPageURL = "";
+  @ViewChild('articleBlock') child;
 
   sitesButtonText = "Choose Sites...";
   siteChooserDisplay = "none";
@@ -37,11 +38,12 @@ export class AppComponent {
         .subscribe(data => {this.allLanguageArray = this.alService.buildAllLanguageArray(data);});
   }
 
+  ngAfterViewInit() {
+    window.setTimeout(() => {this.child.updateDisplayURL(this.getRandomURL())}, 1000);
+  }
 
 
-
-
-  getRandomArticleFromFullSiteArray() {
+  getRandomURLFromFullSiteArray() {
     if (this.allLanguageArray.length == 0) {
       return("");
     }
@@ -59,28 +61,35 @@ export class AppComponent {
     this.activeLanguagesArray = this.activeLangService.getActiveLanguagesArray();
     this.activeSitesArray = this.activeSiteService.getActiveSitesArray();
 
+    let returnUrl = "";
+
     if (this.activeLanguagesArray.length == 0 && this.activeSitesArray.length == 0) {
-      return(this.getRandomArticleFromFullSiteArray());
+      returnUrl = this.getRandomURLFromFullSiteArray();
     }
 
     else if (this.activeLanguagesArray.length == 0) {
       alert("You need to choose some languages! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
+
+      return;
     }
 
     else if (this.activeSitesArray.length == 0) {
       alert("You need to choose some sites! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
+
+      return;
     }
 
     else {
       for(var i = 0; i < this.allLanguageArray.length; i++){
         let tempArray = [];
-        alert(this.activeLanguagesArray.indexOf("ab"));
+
         if(this.activeLanguagesArray.indexOf(this.allLanguageArray[i].id) != -1)
         {
-          if(i < 3) {alert(this.allLanguageArray[i])};
           for (var j = 0; j < this.activeSitesArray.length; j++) {
-            if (this.allLanguageArray[i].sites.indexOf("www." + this.activeLanguagesArray[j] + ".org") != -1) {
-              tempArray.push("www." + this.activeLanguagesArray[j] + ".org");
+            //alert(this.allLanguageArray[i].sites[0]);
+            let testUrl = "https://" + this.allLanguageArray[i].id + "." + this.activeSitesArray[j] + ".org";
+            if (this.allLanguageArray[i].sites.indexOf(testUrl) != -1) {
+              tempArray.push(testUrl);
             }
           }
 
@@ -100,18 +109,15 @@ export class AppComponent {
         let randomInnerIndex = Math.floor(Math.random() * this.validSitesArray[randomOuterIndex].length);
         let randomUrl = this.validSitesArray[randomOuterIndex][randomInnerIndex];
         randomUrl += "/wiki/Special:Random?dummyVar=" + (new Date()).getTime();
-        //return randomUrl;
-        alert(randomUrl);
+        returnUrl = randomUrl;
       }
 
     }
 
+    this.updateURLInfo(returnUrl);
+    return(returnUrl);
+
   }
-
-
-
-
-
 
 
 
@@ -129,8 +135,8 @@ export class AppComponent {
     return "Unknown";
   }
 
-  updateURLInfo($event) {
-    let originalString = $event;
+  updateURLInfo(url) {
+    let originalString = url;
     let tempString = originalString.replace(/https\:\/\//, '')
     let tempString = tempString.replace(/\.org\/wiki\/.*/, '');
     let periodPosition = tempString.indexOf(".");
