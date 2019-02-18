@@ -2,17 +2,17 @@
 <span class="titleText">Wiki-Randomizer</span>
 <button class="topRowButton" (click)="toggleSiteChooser();">{{ sitesButtonText }}</button>
 <button class="topRowButton" (click)="toggleLanguageChooser();">{{ languagesButtonText }}</button>
-<button class="topRowButton" (click)="articleBlock.getRandomArticle();">Go!</button>
+<button class="topRowButton" (click)="articleBlock.updateDisplayURL(getRandomURL());">Go!</button>
 <span class="urlDisplay">{{ currentPageURL }}</span>
 
 <hr/>
 <div [style.display]="siteChooserDisplay">
-<app-site-selection-block #sitesBlock></app-site-selection-block>
+    <app-site-selection-block #sitesBlock></app-site-selection-block>
 </div>
 
 <hr/>
 <div [style.display]="languageChooserDisplay">
-<app-language-selection-block #languagesBlock></app-language-selection-block>
+    <app-language-selection-block #languagesBlock></app-language-selection-block>
 </div>
 
 <app-article-viewing-block #articleBlock (changedURL)="updateURLInfo($event);"></app-article-viewing-block>

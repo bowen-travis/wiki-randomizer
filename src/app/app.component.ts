@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { AllLanguagesService } from './all-languages.service';
 import { GetDataFromURLService } from './get-data-from-url.service';
+import { AllLanguagesService } from './all-languages.service';
+import { ActiveLanguagesService} from './active-languages.service';
+import { ActiveSitesService} from './active-sites.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +14,10 @@ export class AppComponent {
 
   rawLanguageDataUrl = "https://commons.wikimedia.org/w/api.php?action=sitematrix&smtype=language&origin=*&format=json";
   allLanguageArray = [];
-  //alService = new(AllLanguagesService);
-  //getDataService = new(GetDataFromURLService);
+  activeLanguagesArray = [];
+  activeSitesArray = [];
+  validSitesArray = [];
+  currentPageURL = "";
 
   sitesButtonText = "Choose Sites...";
   siteChooserDisplay = "none";
@@ -21,17 +25,100 @@ export class AppComponent {
   languagesButtonText = "Choose Languages...";
   languageChooserDisplay = "none";
 
-  currentPageURL = "";
-
   constructor(
-    private getDataService: GetDataFromURLService, 
-    private alService: AllLanguagesService
-    ) {};
+      private getDataService: GetDataFromURLService,
+      private alService: AllLanguagesService,
+      private activeLangService: ActiveLanguagesService,
+      private activeSiteService: ActiveSitesService
+  ) {};
 
   ngOnInit() {
     this.getDataService.getDataFromURL(this.rawLanguageDataUrl)
-      .subscribe(data => {this.allLanguageArray = this.alService.buildAllLanguageArray(data);});
+        .subscribe(data => {this.allLanguageArray = this.alService.buildAllLanguageArray(data);});
   }
+
+
+
+
+
+  getRandomArticleFromFullSiteArray() {
+    if (this.allLanguageArray.length == 0) {
+      return("");
+    }
+    else {
+      let randomLang = this.allLanguageArray[Math.floor(Math.random() * this.allLanguageArray.length)];
+      let randomURL = randomLang.sites[Math.floor(Math.random() * randomLang.sites.length)]
+          + "/wiki/Special:Random?dummyVar=" + (new Date()).getTime();
+
+      return randomURL;
+    }
+  }
+
+  getRandomURL() {
+
+    this.activeLanguagesArray = this.activeLangService.getActiveLanguagesArray();
+    this.activeSitesArray = this.activeSiteService.getActiveSitesArray();
+
+    if (this.activeLanguagesArray.length == 0 && this.activeSitesArray.length == 0) {
+      return(this.getRandomArticleFromFullSiteArray());
+    }
+
+    else if (this.activeLanguagesArray.length == 0) {
+      alert("You need to choose some languages! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
+    }
+
+    else if (this.activeSitesArray.length == 0) {
+      alert("You need to choose some sites! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
+    }
+
+    else {
+      for(var i = 0; i < this.allLanguageArray.length; i++){
+        let tempArray = [];
+        alert(this.activeLanguagesArray.indexOf("ab"));
+        if(this.activeLanguagesArray.indexOf(this.allLanguageArray[i].id) != -1)
+        {
+          if(i < 3) {alert(this.allLanguageArray[i])};
+          for (var j = 0; j < this.activeSitesArray.length; j++) {
+            if (this.allLanguageArray[i].sites.indexOf("www." + this.activeLanguagesArray[j] + ".org") != -1) {
+              tempArray.push("www." + this.activeLanguagesArray[j] + ".org");
+            }
+          }
+
+          if (tempArray.length != 0) {
+            this.validSitesArray.push(tempArray);
+          }
+        }
+
+      }
+
+      if (this.validSitesArray.length == 0) {
+        alert("Your choices of language and site do not combine to form any valid sites.  Keep in mind that popular languages will have most of the wikis listed, whereas more obscure languages may only have a Wikipedia.");
+      }
+
+      else{
+        let randomOuterIndex = Math.floor(Math.random() * this.validSitesArray.length);
+        let randomInnerIndex = Math.floor(Math.random() * this.validSitesArray[randomOuterIndex].length);
+        let randomUrl = this.validSitesArray[randomOuterIndex][randomInnerIndex];
+        randomUrl += "/wiki/Special:Random?dummyVar=" + (new Date()).getTime();
+        //return randomUrl;
+        alert(randomUrl);
+      }
+
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   getLanguageNameFromCode(code): string {
     for (var i=0; i < this.allLanguageArray.length; i++) {
@@ -45,12 +132,12 @@ export class AppComponent {
   updateURLInfo($event) {
     let originalString = $event;
     let tempString = originalString.replace(/https\:\/\//, '')
-    tempString = tempString.replace(/\.org\/wiki\/.*/, '');
+    let tempString = tempString.replace(/\.org\/wiki\/.*/, '');
     let periodPosition = tempString.indexOf(".");
 
     let languageName = this.getLanguageNameFromCode(tempString.slice(0, periodPosition));
     let sitename = tempString.slice(periodPosition + 1, periodPosition + 2).toUpperCase()
-         + tempString.slice(periodPosition + 2);
+        + tempString.slice(periodPosition + 2);
     this.currentPageURL = (languageName + " - " + sitename);
   }
 
@@ -66,9 +153,9 @@ export class AppComponent {
 
   displayAppInfo() {
     let infostring = "This is a wrapper that extends Wikimedia's random article functionality by allowing the user "
-    + "to choose a set of languages and wikisites to randomly choose from.  The app will first choose a random language, and then "
-    + "a random site, and finally retrieve a random article from that language/site combo."
-    + "\n\nIf you do not choose any languages and sites, your random articles will be chosen from all of the languages and sites.";
+        + "to choose a set of languages and wikisites to randomly choose from.  The app will first choose a random language, and then "
+        + "a random site, and finally retrieve a random article from that language/site combo."
+        + "\n\nIf you do not choose any languages and sites, your random articles will be chosen from all of the languages and sites.";
 
     alert(infostring);
   }
