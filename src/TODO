@@ -1,3 +1,16 @@
-1. Language name sometimes showing up as "Unknown".  It might only be happening for startup and/or reload
-2. Refactor services and how JSON data is transformed
-3. Add more wiki sites - wikihow.com, openstreetmap.org
+Put Language and Site on separate lines (upper right) to deal with longer language names
+
+Make it work with ONLY languages selected or ONLY sites selected
+
+Use a routerOutlet to switch between article view and language selection
+
+Figure out why there is 2 copies of Cantonese.  Check for other doubles.
+
+Add more wiki sites - wikihow.com, openstreetmap.org
+
+More code documentation
+
+Figure out how to get initial random page without using setTimeout()
+
+
+
