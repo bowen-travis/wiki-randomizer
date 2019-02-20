@@ -1,14 +1,19 @@
-Put Language and Site on separate lines (upper right) to deal with longer language names
-
-Make it work with ONLY languages selected or ONLY sites selected
-
-Use a routerOutlet to switch between article view and language selection
+Figure out why stand-alone doesn't load in Chrome
 
 Figure out why there is 2 copies of Cantonese.  Check for other doubles.
+
+Put Language and Site on separate lines (upper right) to deal with longer language names
+
+Don't rebuild validSitesArray on each article load
+    -use EventEmitter in language and site selection blocks to notify that changes have been made
+
+Use a routerOutlet to switch between article view and language selection
 
 Add more wiki sites - wikihow.com, openstreetmap.org
 
 More code documentation
+
+Redo identifier names
 
 Figure out how to get initial random page without using setTimeout()
 
