@@ -58,16 +58,22 @@ export class AppComponent {
 
   getRandomURL() {
 
+    //reset valid sites array
+    this.validSitesArray = [];
+
     this.activeLanguagesArray = this.activeLangService.getActiveLanguagesArray();
     this.activeSitesArray = this.activeSiteService.getActiveSitesArray();
 
+    let activeLanguagesEmpty = this.activeLanguagesArray.length == 0;
+    let activeSitesEmpty = this.activeSitesArray.length == 0;
+
     let returnUrl = "";
 
-    if (this.activeLanguagesArray.length == 0 && this.activeSitesArray.length == 0) {
+    if (activeLanguagesEmpty && activeSitesEmpty) {
       returnUrl = this.getRandomURLFromFullSiteArray();
     }
 
-    else if (this.activeLanguagesArray.length == 0) {
+    /*else if (this.activeLanguagesArray.length == 0) {
       alert("You need to choose some languages! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
 
       return;
@@ -77,19 +83,26 @@ export class AppComponent {
       alert("You need to choose some sites! \n\n Currently users have to configure both languages AND sites, or leave all unchecked (defaults to all combinations).  This will be fixed in a future version.")
 
       return;
-    }
+    }*/
 
     else {
       for(var i = 0; i < this.allLanguageArray.length; i++){
         let tempArray = [];
 
-        if(this.activeLanguagesArray.indexOf(this.allLanguageArray[i].id) != -1)
+        if((this.activeLanguagesArray.indexOf(this.allLanguageArray[i].id) != -1) || (activeLanguagesEmpty))
         {
-          for (var j = 0; j < this.activeSitesArray.length; j++) {
-            //alert(this.allLanguageArray[i].sites[0]);
-            let testUrl = "https://" + this.allLanguageArray[i].id + "." + this.activeSitesArray[j] + ".org";
-            if (this.allLanguageArray[i].sites.indexOf(testUrl) != -1) {
-              tempArray.push(testUrl);
+          if (activeSitesEmpty) {
+            for (var j = 0; j < this.allLanguageArray[i].sites.length; j++) {
+              tempArray.push(this.allLanguageArray[i].sites[j]);
+            }
+          }
+
+          else{
+            for (var j = 0; j < this.activeSitesArray.length; j++) {
+              let testUrl = "https://" + this.allLanguageArray[i].id + "." + this.activeSitesArray[j] + ".org";
+              if (this.allLanguageArray[i].sites.indexOf(testUrl) != -1) {
+                tempArray.push(testUrl);
+              }
             }
           }
 
@@ -102,6 +115,7 @@ export class AppComponent {
 
       if (this.validSitesArray.length == 0) {
         alert("Your choices of language and site do not combine to form any valid sites.  Keep in mind that popular languages will have most of the wikis listed, whereas more obscure languages may only have a Wikipedia.");
+        return("");
       }
 
       else{

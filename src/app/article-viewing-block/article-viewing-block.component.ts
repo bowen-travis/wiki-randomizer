@@ -11,7 +11,7 @@ export class ArticleViewingBlockComponent implements OnInit {
     displayUrl = "";
 
     updateDisplayURL(url) {
-        this.displayUrl = url;
+        if(url != "") this.displayUrl = url;
     }
 
 }
