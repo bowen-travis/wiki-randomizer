@@ -1,8 +1,10 @@
-Figure out why stand-alone doesn't load in Chrome
+Still sometimes seeing page load with "Unknown" language
 
 Figure out why there is 2 copies of Cantonese.  Check for other doubles.
 
 Put Language and Site on separate lines (upper right) to deal with longer language names
+
+In Language Selector, use service to build full list.
 
 Don't rebuild validSitesArray on each article load
     -use EventEmitter in language and site selection blocks to notify that changes have been made
