@@ -20,7 +20,7 @@ export class ActiveSitesService {
 
   }
 
-  getActiveSitesArray(): array{
+  getActiveSitesArray() {
     return this.activeSitesArray;
   }
 

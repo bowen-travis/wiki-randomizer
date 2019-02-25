@@ -152,7 +152,7 @@ export class AppComponent {
   updateURLInfo(url) {
     let originalString = url;
     let tempString = originalString.replace(/https\:\/\//, '')
-    let tempString = tempString.replace(/\.org\/wiki\/.*/, '');
+    tempString = tempString.replace(/\.org\/wiki\/.*/, '');
     let periodPosition = tempString.indexOf(".");
 
     let languageName = this.getLanguageNameFromCode(tempString.slice(0, periodPosition));

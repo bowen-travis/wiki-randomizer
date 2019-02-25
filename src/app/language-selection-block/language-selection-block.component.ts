@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GetDataFromURLService } from '../get-data-from-url.service';
-import { Language } from '../Language';
 import { ActiveLanguagesService } from '../active-languages.service';
 
 @Component({

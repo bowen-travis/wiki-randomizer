@@ -6,7 +6,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
     styleUrls: ['./article-viewing-block.component.css']
 })
 
-export class ArticleViewingBlockComponent implements OnInit {
+export class ArticleViewingBlockComponent {
 
     displayUrl = "";
 
