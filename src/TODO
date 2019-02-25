@@ -1,8 +1,13 @@
-Still sometimes seeing page load with "Unknown" language
+! Still sometimes seeing page load with "Unknown" language
+
+Fix text in info alert -- too long, needs line breaks.
 
 Figure out why there is 2 copies of Cantonese.  Check for other doubles.
 
 Put Language and Site on separate lines (upper right) to deal with longer language names
+(or figure out some other way to do it)
+
+Get code working on Stackblitz again
 
 In Language Selector, use service to build full list.
 
