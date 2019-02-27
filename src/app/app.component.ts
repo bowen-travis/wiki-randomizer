@@ -17,7 +17,8 @@ export class AppComponent {
   activeLanguagesArray = [];
   activeSitesArray = [];
   validSitesArray = [];
-  currentPageURL = "";
+  currentLanguage = "";
+  currentSite = "";
   @ViewChild('articleBlock') child;
 
   sitesButtonText = "Choose Sites...";
@@ -158,7 +159,8 @@ export class AppComponent {
     let languageName = this.getLanguageNameFromCode(tempString.slice(0, periodPosition));
     let sitename = tempString.slice(periodPosition + 1, periodPosition + 2).toUpperCase()
         + tempString.slice(periodPosition + 2);
-    this.currentPageURL = (languageName + " - " + sitename);
+    this.currentLanguage = languageName;
+    this.currentSite = sitename;
   }
 
   toggleLanguageChooser() {
@@ -172,10 +174,12 @@ export class AppComponent {
   }
 
   displayAppInfo() {
-    let infostring = "This is a wrapper that extends Wikimedia's random article functionality by allowing the user "
-        + "to choose a set of languages and wikisites to randomly choose from.  The app will first choose a random language, and then "
-        + "a random site, and finally retrieve a random article from that language/site combo."
-        + "\n\nIf you do not choose any languages and sites, your random articles will be chosen from all of the languages and sites.";
+    let infostring = "This is a wrapper that extends Wikimedia's random article functionality\n" +
+                     "by allowing the user to choose a set of languages and wikisites to randomly\n" +
+                     "choose from.  The app will first choose a random language, and then a random\n" + 
+                     "site, and finally retrieve a random article from that language/site combo.\n\n" + 
+                     "If you do not choose any languages and sites, your random articles will be \n" +
+                     "chosen from all of the valid language/site combinations.";
 
     alert(infostring);
   }

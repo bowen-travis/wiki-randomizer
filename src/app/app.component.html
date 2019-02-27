@@ -1,9 +1,29 @@
-<button class="topRowButton" (click)="displayAppInfo();">What is this thing?</button>
-<span class="titleText">Wiki-Randomizer</span>
-<button class="topRowButton" (click)="toggleSiteChooser();">{{ sitesButtonText }}</button>
-<button class="topRowButton" (click)="toggleLanguageChooser();">{{ languagesButtonText }}</button>
-<button class="topRowButton" (click)="articleBlock.updateDisplayURL(getRandomURL());">Go!</button>
-<span class="urlDisplay">{{ currentPageURL }}</span>
+<div class="top" style="height: 80px; width: 100%">
+  <div style="float:left; width: 14%; line-height: 80px; text-align: center">     
+    <button class="topRowButton" (click)="displayAppInfo();">What is this thing?</button>
+  </div>
+  <div style="float:left; width: 30%; line-height: 80px; text-align: center">     
+    <span class="titleText">Wiki-Randomizer</span>
+  </div>
+  <div style="float:left; width: 14%; line-height: 80px; text-align: center">     
+    <button class="topRowButton" (click)="toggleSiteChooser();">{{ sitesButtonText }}</button>
+  </div>
+  <div style="float:left; width: 14%; line-height: 80px; text-align: center">     
+    <button class="topRowButton" (click)="toggleLanguageChooser();">{{ languagesButtonText }}</button>
+  </div>
+  <div style="float:left; width: 10%; line-height: 80px; text-align: center">     
+    <button class="topRowButton" (click)="articleBlock.updateDisplayURL(getRandomURL());">Go!</button>
+  </div>
+  <div style="float:left; width: 18%; line-height: 20px; text-align: center">     
+      <span class="urlDisplay"><br/>{{ currentLanguage }}<br/>{{ currentSite }}</span>
+  </div>
+</div>
+  
+
+
+
+
+
 
 <hr/>
 <div [style.display]="siteChooserDisplay">
