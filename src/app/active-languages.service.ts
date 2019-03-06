@@ -7,14 +7,19 @@ import { Injectable } from '@angular/core';
 export class ActiveLanguagesService {
   activeLanguagesArray = [];
 
-  constructor() { }
+  constructor() {
+    this.activeLanguagesArray = window.localStorage.activeLanguagesArray ? JSON.parse(window.localStorage.activeLanguagesArray) : [];
+  }
 
-  addOrDeleteLanguage(code){
+  addOrDeleteLanguage(code) {
+
     if (this.activeLanguagesArray.indexOf(code) == -1){
       this.activeLanguagesArray.push(code);
+      window.localStorage.activeLanguagesArray = JSON.stringify(this.activeLanguagesArray);
     }
     else{
       this.activeLanguagesArray.splice(this.activeLanguagesArray.indexOf(code),1)
+      window.localStorage.activeLanguagesArray = JSON.stringify(this.activeLanguagesArray);
     }
 
   }

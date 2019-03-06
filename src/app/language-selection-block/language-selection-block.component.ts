@@ -10,6 +10,9 @@ import { ActiveLanguagesService } from '../active-languages.service';
 
 export class LanguageSelectionBlockComponent implements OnInit {
 
+  //we will only load this to get initial choices that were saved in localStorage
+  activeLanguagesArray = []  
+
   fullLanguageArray = [];
   url = "https://commons.wikimedia.org/w/api.php?action=sitematrix&smtype=language&origin=*&format=json";
 
@@ -21,6 +24,8 @@ export class LanguageSelectionBlockComponent implements OnInit {
   ngOnInit() {
     this.getDataService.getDataFromURL(this.url)
       .subscribe(data => {this.buildFullLanguageArray(data)});
+    
+    this.activeLanguagesArray = this.alService.getActiveLanguagesArray();
   }
   
   processLanguageSelect(code){

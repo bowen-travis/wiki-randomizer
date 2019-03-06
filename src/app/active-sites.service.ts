@@ -7,15 +7,19 @@ import { Injectable } from '@angular/core';
 export class ActiveSitesService {
   activeSitesArray = [];
 
-  constructor() { }
+  constructor() {
+    this.activeSitesArray = window.localStorage.activeSitesArray ? JSON.parse(window.localStorage.activeSitesArray) : [];
+  }
 
   addOrDeleteSite(site){
     site = site.toLowerCase();
     if (this.activeSitesArray.indexOf(site) == -1){
       this.activeSitesArray.push(site);
+      window.localStorage.activeSitesArray = JSON.stringify(this.activeSitesArray);
     }
     else{
       this.activeSitesArray.splice(this.activeSitesArray.indexOf(site),1)
+      window.localStorage.activeSitesArray = JSON.stringify(this.activeSitesArray);
     }
 
   }

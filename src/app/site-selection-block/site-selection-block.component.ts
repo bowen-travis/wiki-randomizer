@@ -10,6 +10,9 @@ import { ActiveSitesService } from '../active-sites.service';
 
 export class SiteSelectionBlockComponent implements OnInit {
 
+  //we will only load this to get initial choices that were saved in localStorage
+  activeSitesArray = []
+
   url="https://commons.wikimedia.org/w/api.php?action=sitematrix&smtype=language&origin=*&format=json";
   fullSiteArray = [];
 
@@ -21,6 +24,8 @@ export class SiteSelectionBlockComponent implements OnInit {
   ngOnInit() {
     this.getDataService.getDataFromURL(this.url)
       .subscribe(data => {this.buildFullSiteArray(data)});
+
+    this.activeSitesArray = this.asService.getActiveSitesArray();
   }
 
   processSiteSelect(site){
