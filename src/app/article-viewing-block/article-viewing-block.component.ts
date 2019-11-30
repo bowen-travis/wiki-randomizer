@@ -8,7 +8,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 export class ArticleViewingBlockComponent {
 
-    displayUrl = "";
+    displayUrl = "http://www.wikipedia.org";
 
     updateDisplayURL(url) {
         if(url != "") this.displayUrl = url;
