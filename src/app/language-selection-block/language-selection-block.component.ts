@@ -11,23 +11,23 @@ import { ActiveLanguagesService } from '../active-languages.service';
 export class LanguageSelectionBlockComponent implements OnInit {
 
   //we will only load this to get initial choices that were saved in localStorage
-  activeLanguagesArray = []  
+  activeLanguagesArray = []
 
   fullLanguageArray = [];
   url = "https://commons.wikimedia.org/w/api.php?action=sitematrix&smtype=language&origin=*&format=json";
 
   constructor(
-    private getDataService: GetDataFromURLService, 
+    private getDataService: GetDataFromURLService,
     private alService: ActiveLanguagesService
   ) {}
 
   ngOnInit() {
     this.getDataService.getDataFromURL(this.url)
       .subscribe(data => {this.buildFullLanguageArray(data)});
-    
+
     this.activeLanguagesArray = this.alService.getActiveLanguagesArray();
   }
-  
+
   processLanguageSelect(code){
     this.alService.addOrDeleteLanguage(code);
   }
@@ -49,40 +49,47 @@ export class LanguageSelectionBlockComponent implements OnInit {
   buildFullLanguageArray(theJSON){
 
     let newArray = [];
-    
+
     for (var lang in theJSON.sitematrix) {
 
       if (typeof(theJSON.sitematrix[lang]) == "object") {
 
-          let localname = theJSON.sitematrix[lang].localname;
+        //2021-01-28 I discovered Language Choice block not appearing.
+        //  Problem was a weird piece of data from the API.
+        //  One of the entries was missing "localname" and that was causing
+        //    the alphabetical sort of the final array to fail.
+        if (!("localname" in theJSON.sitematrix[lang])) {
+          continue;
+        }
 
-          let validLocalname = false;
-          let identifier = "";
-          for(var innerSite in theJSON.sitematrix[lang].site) { 
-            if(!("closed" in theJSON.sitematrix[lang].site[innerSite])) {
-              validLocalname = true;
-              identifier = theJSON.sitematrix[lang].code;
-              break;
-            }
-          }
+        let localname = theJSON.sitematrix[lang].localname;
 
-          if (validLocalname === true) {
-            //remove the one long language name that is breaking flow of layout
-            let excludeRegexp1 = /Belarusian\s*\(/;
-            //also remove one of the 2 entries for Cantonese
-            let excludeRegexp2 = /^yue$/
-            if ((! excludeRegexp1.test(localname)) && (! excludeRegexp2.test(identifier))) {
-              newArray.push({id: identifier, name: localname});
-            }
+        let validLocalname = false;
+        let identifier = "";
+        for(var innerSite in theJSON.sitematrix[lang].site) {
+          if(!("closed" in theJSON.sitematrix[lang].site[innerSite])) {
+            validLocalname = true;
+            identifier = theJSON.sitematrix[lang].code;
+            break;
           }
-    
+        }
+
+        if (validLocalname === true) {
+          //remove the one long language name that is breaking flow of layout
+          let excludeRegexp1 = /Belarusian\s*\(/;
+          //also remove one of the 2 entries for Cantonese
+          let excludeRegexp2 = /^yue$/
+          if ((! excludeRegexp1.test(localname)) && (! excludeRegexp2.test(identifier))) {
+            newArray.push({id: identifier, name: localname});
+          }
+        }
+
       }
 
     }
 
-    newArray.sort(this.compare); 
+    newArray.sort(this.compare);
     this.fullLanguageArray = newArray;
-  
   }
 
 }
