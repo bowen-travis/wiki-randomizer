@@ -75,10 +75,10 @@ export class LanguageSelectionBlockComponent implements OnInit {
         }
 
         if (validLocalname === true) {
-          //remove the one long language name that is breaking flow of layout
-          let excludeRegexp1 = /Belarusian\s*\(/;
-          //also remove one of the 2 entries for Cantonese
-          let excludeRegexp2 = /^yue$/
+          // remove the one long language name that is breaking flow of layout
+          const excludeRegexp1 = /Belarusian\s*\(/;
+          // also remove one of the 2 entries for Cantonese
+          const excludeRegexp2 = /^yue$/
           if ((! excludeRegexp1.test(localname)) && (! excludeRegexp2.test(identifier))) {
             newArray.push({id: identifier, name: localname});
           }
